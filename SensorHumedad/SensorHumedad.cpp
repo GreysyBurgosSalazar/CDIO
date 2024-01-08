@@ -1,14 +1,10 @@
 #include "SensorHumedad.h"
-#include <Arduino.h> 
-#include <Adafruit_ADS1X15.h>
-Adafruit_ADS1115 ads;
 
-SensorHumedad::SensorHumedad(int canal) {
-  canalADS = canal;
+SensorHumedad::SensorHumedad(int canal, Adafruit_ADS1115& ads): canalADS(canal), ads1(ads) {
 }
 
 int SensorHumedad::lecturaHumedad() {
-  int valorDigital = ads.readADC_SingleEnded(canalADS);
+  int valorDigital = ads1.readADC_SingleEnded(canalADS);
   int humedad = map(valorDigital, 30900, 16000, 0, 100);
   if (humedad > 100) {
     humedad = 100;
@@ -28,8 +24,4 @@ void SensorHumedad::mostrarHumedad() {
   if (lectura <= 10) {
     Serial.println("HUMEDAD BAJA!!!");
   }
-}
-
-void SensorHumedad::enviarDatosHumedad() {
-  int datosHumedad = lecturaHumedad()
 }
